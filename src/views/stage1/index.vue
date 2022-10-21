@@ -1,5 +1,6 @@
 <template>
     <div class="user-manage">
+        <query-form/>
         <div class="query-form">
             <el-form ref="form" :inline="true" :model="user">
                 <el-form-item label="用户ID" prop="userId">

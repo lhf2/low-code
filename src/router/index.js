@@ -5,12 +5,17 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: "/stage1"
+      redirect: "/stage2"
     },
     {
       path: '/stage1',
       name: 'stage1',
       component: () => import('../views/stage1/index.vue')
+    },
+    {
+      path: '/stage2',
+      name: 'stage2',
+      component: () => import('../views/stage2/index.vue')
     }
   ]
 })

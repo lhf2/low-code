@@ -1,28 +1,6 @@
 <template>
     <div class="user-manage">
-        <query-form/>
-        <div class="query-form">
-            <el-form ref="form" :inline="true" :model="user">
-                <el-form-item label="用户ID" prop="userId">
-                    <el-input v-model="user.userId" placeholder="请输入用户ID" />
-                </el-form-item>
-                <el-form-item label="用户名称" prop="userName">
-                    <el-input v-model="user.userName" placeholder="请输入用户名称" />
-                </el-form-item>
-                <el-form-item label="状态" prop="state">
-                    <el-select v-model="user.state">
-                        <el-option :value="0" label="所有"></el-option>
-                        <el-option :value="1" label="在职"></el-option>
-                        <el-option :value="2" label="离职"></el-option>
-                        <el-option :value="3" label="试用期"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="handleQuery">查询</el-button>
-                    <el-button @click="handleReset">重置</el-button>
-                </el-form-item>
-            </el-form>
-        </div>
+        <QueryForm :form="queryform" v-model="user" @handleQuery="handleQuery"/>
         <div class="base-table">
             <el-table :data="userList" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" />
@@ -44,7 +22,8 @@
 <script setup>
 import { reactive, ref } from 'vue'
 // 初始化用户表单对象
-const user = reactive({
+// 这里使用 ref 是因为触发 update:modelValue 事件时，reactive 会有问题；
+const user = ref({
     state: 0
 });
 
@@ -59,6 +38,43 @@ const userList = reactive([
     }
 ])
 
+// 查询表单
+const queryform = [
+    {
+        type: 'input',
+        label: "用户ID",
+        model: 'userId',
+        placeholder: '请输入用户ID'
+    },
+    {
+        type: 'input',
+        label: "用户名称",
+        model: 'userName',
+        placeholder: '请输入用户名称'
+    },
+    {
+        type: 'select',
+        label: "状态",
+        model: 'state',
+        placeholder: '请选择所属状态',
+        options: [{
+            label: '所有',
+            value: 0
+        },
+        {
+            label: '在职',
+            value: 1
+        },
+        {
+            label: '离职',
+            value: 2
+        },
+        {
+            label: '试用期',
+            value: 3
+        }]
+    }
+]
 // 初始化分页对象
 const pager = reactive({
     pageNum: 1,
@@ -102,17 +118,9 @@ const columns = reactive([
     }
 ]);
 
-// 表单 ref
-const form = ref(null)
-
 // 查询
 const handleQuery = () => {
-    console.log('handleQuery', user)
-}
-
-// 重置
-const handleReset = () => {
-    form.value.resetFields();
+    console.log('handleQuery', user.value)
 }
 
 // 表格多选

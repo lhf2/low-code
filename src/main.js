@@ -19,8 +19,9 @@ const app = createApp(App)
 
 // 引入自定义插件
 import QueryFrom from './components/stage1/index'
+import VueForm from './components/stage2/index'
 
 app.use(createPinia())
 app.use(router)
-app.use(ElementPlus).use(QueryFrom)
+app.use(ElementPlus).use(QueryFrom).use(VueForm)
 app.mount('#app')

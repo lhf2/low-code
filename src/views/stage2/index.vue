@@ -3,7 +3,6 @@
 </template>
 
 <script setup>
-import VueForm from '@lljj/vue3-form-element';
 import { reactive } from '@vue/reactivity';
 
 const formData = reactive({})

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <VueForm v-model="formData" :schema="schema"></VueForm>
+        <VueForm v-model="formData" :schema="schema" :errorSchema="errorSchema"></VueForm>
         <el-button @click="test">测试formData的值是否改变</el-button>
     </div>
 
@@ -20,10 +20,11 @@ const test = () => {
     console.log('formData', formData.value);
 }
 
-const schema = reactive({
+const schema = {
     type: 'object',
     required: [
-        'userName'
+        'userName',
+        'age'
     ],
     properties: {
         userName: {
@@ -34,8 +35,21 @@ const schema = reactive({
         age: {
             type: 'number',
             title: '年龄'
-        }
+        },
+        bio: {
+            type: "string",
+            title: "Bio",
+            minLength: 10,
+            default: "我是默认的bio"
+        },
+        
     }
-})
+}
+
+const errorSchema = {
+    "bio": {
+        "err:minLength": "签名最小长度10个字符串"
+    }
+}
 
 </script>

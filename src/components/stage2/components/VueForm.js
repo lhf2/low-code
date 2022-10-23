@@ -3,10 +3,9 @@ import WIDGET_MAP from './WIDGET_MAP.js'
 import Widget from './Widget.js';
 export default{
     name: 'VueForm',
-    props: ['modelValue', 'schema'],
+    props: ['modelValue', 'schema', 'errorSchema'],
     emits: ['update:modelValue'],
     setup(props, {slots, emit }) {
-        console.log('modelValue', props.modelValue);
         // 定义一个 form 组件以及其 ref 属性
         const form = defineComponent({
             inheritAttrs: false,
@@ -43,6 +42,7 @@ export default{
                 rootFormData: rootFormData.value,
                 curNodePath: v,
                 schema: props.schema,
+                errorSchema: props.errorSchema,
                 child: child
             })
             

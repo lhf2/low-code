@@ -3,7 +3,7 @@
         <VueForm v-model="formData" :schema="schema"></VueForm>
         <el-button @click="test">测试formData的值是否改变</el-button>
     </div>
-    
+
 </template>
 
 <script setup>
@@ -22,6 +22,9 @@ const test = () => {
 
 const schema = reactive({
     type: 'object',
+    required: [
+        'userName'
+    ],
     properties: {
         userName: {
             type: 'string',

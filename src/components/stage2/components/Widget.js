@@ -33,7 +33,8 @@ export default {
                 resolveComponent('el-form-item'),
                 {
                     labelWidth: 90,
-                    label: props.child.title
+                    label: props.child.title,
+                    required: props.schema.required.includes(props.curNodePath)
                 },
                 h( 
                     resolveComponent(props.widget),

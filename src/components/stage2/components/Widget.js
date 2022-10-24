@@ -20,6 +20,10 @@ export default {
             type: Object,
             default: () => ({})
         },
+        customFormats: {
+            type: Object,
+            default: () => ({})
+        },
         rootFormData: {
             type: null
         },
@@ -60,13 +64,13 @@ export default {
                                 const errors = validateError({
                                     schema: schemaItem,
                                     errorSchema: errorSchemaItem,
+                                    customFormats: props.customFormats,
                                     formValue,
                                     required
                                 });
 
                                 // 存在校验不通过字段
                                 if (errors && errors.length > 0) {
-                                    console.log(errors[0].message);
                                     if (callback) return callback(errors[0].message);
                                     return Promise.reject(errors[0].message);
                                 }

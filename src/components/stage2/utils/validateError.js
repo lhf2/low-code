@@ -1,6 +1,7 @@
 import Ajv from "ajv"
+import { isObject } from "./common";
 
-export default function validateError({schema, errorSchema, formValue, required}){
+export default function validateError({schema, errorSchema, formValue, required, customFormats}){
     // 初始化一个 ajv 实例对象
     const ajv = new Ajv({
         allErrors: true
@@ -30,22 +31,26 @@ export default function validateError({schema, errorSchema, formValue, required}
         return [];
     }
 
+    // 注册自定义formats
+    if(customFormats && isObject(customFormats)){
+        Object.keys(customFormats).forEach((formatName) => {
+            ajv.addFormat(formatName, customFormats[formatName]);
+        });
+    }
+    
     // 进行验证
     let validationError = null;
     try {
-        const isValid = ajv.validate(schema, formValue);
+        ajv.validate(schema, formValue);
     } catch (err) {
         validationError = err;
     }
 
     // 如果有错误信息
     let ajvErrors = ajv.errors;
-
     // 处理 errorSchema
     let errorObj = getUserErrOptions(schema, errorSchema)
-
-
-
+    
 
     // 处理成所需格式
     /** 
@@ -65,7 +70,7 @@ export default function validateError({schema, errorSchema, formValue, required}
         // stack: "不应少于 10 个字符"
     }
     */
-    if(ajvErrors && ajvErrors.length){
+    if(ajvErrors && ajvErrors.length && JSON.stringify(errorObj)!='{}'){
         ajvErrors[0].name = ajvErrors[0].keyword
         ajvErrors[0].message = errorObj[ajvErrors[0].keyword] 
     }

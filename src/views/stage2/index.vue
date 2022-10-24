@@ -1,6 +1,7 @@
 <template>
     <div>
-        <VueForm v-model="formData" :schema="schema" :uiSchema="uiSchema" :errorSchema="errorSchema"></VueForm>
+        <VueForm v-model="formData" :schema="schema" :ui-schema="uiSchema" :error-schema="errorSchema"
+            :custom-formats="customFormats"></VueForm>
         <el-button @click="test">测试formData的值是否改变</el-button>
     </div>
 
@@ -48,11 +49,22 @@ const schema = {
             "minimum": 10,
             "default": 16,
         },
+        "password": {
+            "type": "string",
+            "title": "Password",
+            "minLength": 3
+        },
         "bio": {
             "type": "string",
             "title": "Bio",
             "minLength": 10,
             "default": "我是默认的bio"
+        },
+        "price": {
+            "type": "string",
+            "description": "最多输入两位小数点，最大值 999999.99",
+            "title": "价格",
+            "format": "price"
         }
     }
 }
@@ -60,6 +72,12 @@ const schema = {
 const uiSchema = {
     "ui:title": "表单标题",
     "ui:description": "-------------- 表单描述 --------------",
+    "password": {
+        "ui:options": {
+            "placeholder": "请输入你的密码",
+            "type": "password",
+        }
+    },
     "bio": {
         "ui:options": {
             "placeholder": "请输入你的签名",
@@ -72,6 +90,12 @@ const uiSchema = {
 const errorSchema = {
     "bio": {
         "err:minLength": "签名最小长度10个字符串"
+    }
+}
+
+const customFormats = {
+    price(value) {
+        return value !== '' && /^[0-9]\d*$|^\d+(\.\d{1,2})$/.test(value) && value >= 0 && value <= 999999.99;
     }
 }
 

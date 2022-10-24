@@ -6,7 +6,7 @@ import FieldGroupWrap from './FieldGroupWrap.vue'
 
 export default{
     name: 'VueForm',
-    props: ['modelValue', 'schema', 'errorSchema', 'uiSchema'],
+    props: ['modelValue', 'schema', 'errorSchema', 'uiSchema', 'customFormats'],
     emits: ['update:modelValue'],
     setup(props, {slots, emit }) {
         // 定义一个 form 组件以及其 ref 属性
@@ -40,7 +40,6 @@ export default{
         // 递归渲染子组件
         const children = propertiesKeys.map(v => {
             let child = properties[v]
-
             return h(Widget, {
                 widget: WIDGET_MAP.types[child.type],
                 rootFormData: rootFormData.value,
@@ -53,7 +52,8 @@ export default{
                 uiProps: props.uiSchema && getUserUiProps({
                     schema: child,
                     uiSchema: props.uiSchema[v],
-                })
+                }),
+                customFormats: props.customFormats
             })
             
             // TODO: 不懂为什么这种方式不能输入东西，非得抽离出来一个单独的组件 Widget.js

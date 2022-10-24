@@ -3,6 +3,7 @@
  */
 
 import { h, resolveComponent } from 'vue';
+import validateError from '../utils/validateError.js'
 
 export default {
     name: 'Widget',
@@ -36,13 +37,49 @@ export default {
             return h(
                 resolveComponent('el-form-item'),
                 {
-                    labelWidth: 90,
-                    label: props.child.title,
-                    required: props.schema.required.includes(props.curNodePath),
-                    prop: props.curNodePath 
+                    labelWidth: 110,
+                    //  required: props.schema.required.includes(props.curNodePath),
+                    prop: props.curNodePath,
+                    rules: [
+                        {
+                            validator(rule, value, callback) {
+                                const schemaItem = props.schema.properties[props.curNodePath]
+                                const errorSchemaItem = props.errorSchema
+                                const formValue = props.rootFormData[props.curNodePath]
+                                const required = props.schema.required.includes(props.curNodePath) || false
+                                // 使用 ajv 验证
+                                const errors = validateError({
+                                    schema: schemaItem,
+                                    errorSchema: errorSchemaItem,
+                                    formValue,
+                                    required
+                                });
+
+                                // 存在校验不通过字段
+                                if (errors && errors.length > 0) {
+                                    console.log(errors[0].message);
+                                    if (callback) return callback(errors[0].message);
+                                    return Promise.reject(errors[0].message);
+                                }
+
+                                // 校验成功
+                                if (callback) return callback();
+                                return Promise.resolve();
+                            },
+                            trigger: 'change'
+                        }
+                    ]
                 },
-                [
-                    h( 
+                {
+                    // label 的展示，包括必填的*
+                    // 不能使用 required，会有英文提示去不掉
+                    label: () => h('span', {
+                        class: {
+                            genFormLabel: true,
+                            genFormItemRequired: props.schema.required.includes(props.curNodePath),
+                        }
+                    }, props.child.title),
+                    default: () => h(
                         resolveComponent(props.widget),
                         {
                             // v-model
@@ -51,30 +88,12 @@ export default {
                                 const preVal = props.rootFormData[props.curNodePath];
                                 if (preVal !== event) {
                                     props.rootFormData[props.curNodePath] = event;
-                                    // 验证
-                                    let errorObj = props.errorSchema[props.curNodePath]
-                                    if(errorObj){
-                                        for(let key in errorObj){
-                                            console.log(key, errorObj[key]);
-                                        }
-                                    }
                                 }
                             }
                         }
-                    ),
-                    h('div', {
-                        style: {
-                            position: 'absolute',
-                            top: '100%',
-                            left: 0,
-                            color: "red",
-                            fontSize: "10px",
-                            lineHeight: "20px"
-                        }
-                    }, '这里展示错误信息')
-                ]
-                
-            );
+                    )
+                }
+            )
         }
     }
 };

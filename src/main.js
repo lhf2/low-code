@@ -20,6 +20,8 @@ const app = createApp(App)
 // 引入自定义插件
 import QueryFrom from './components/stage1/index'
 import VueForm from './components/stage2/index'
+// 引入样式
+import './components/stage2/assets/baseForm.css'
 
 app.use(createPinia())
 app.use(router)

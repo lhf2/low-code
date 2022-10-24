@@ -42,7 +42,7 @@ export default{
                 rootFormData: rootFormData.value,
                 curNodePath: v,
                 schema: props.schema,
-                errorSchema: props.errorSchema,
+                errorSchema: props.errorSchema[v],
                 child: child
             })
             
@@ -75,7 +75,7 @@ export default{
 
         return () => {
             return h(form, {
-                modal: rootFormData,
+                model: rootFormData,
             }, children)
         }
     }

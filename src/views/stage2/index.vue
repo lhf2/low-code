@@ -9,10 +9,12 @@
 <script setup>
 import { reactive, ref } from '@vue/reactivity';
 
-// TODO:这里使用 ref 是因为触发 update:modelValue 事件时，reactive 会有问题；
+// TODO:这里使用 ref 是因为触发 update:modelValue 事件时，reactive 会有问题
 const formData = ref({
-    userName: '表单的userName',
-    age: 18
+    "firstName": "Jun",
+    "lastName": "Liu",
+    "password": "My.Pass",
+    "telephone": "1881446xxxx"
 })
 
 const test = () => {
@@ -23,26 +25,31 @@ const test = () => {
 const schema = {
     type: 'object',
     required: [
-        'userName',
-        'age'
+        "firstName",
+        "lastName"
     ],
     properties: {
-        userName: {
-            type: 'string',
-            title: '用户名',
-            default: '默认的userName',
+        "firstName": {
+            "type": "string",
+            "title": "First name",
+            "default": "Jun"
         },
-        age: {
-            type: 'number',
-            title: '年龄'
+        "lastName": {
+            "type": "string",
+            "title": "Last name",
+            "err:required": "必须输入Last Name"
         },
-        bio: {
-            type: "string",
-            title: "Bio",
-            minLength: 10,
-            default: "我是默认的bio"
+        "age": {
+            "type": "integer",
+            "title": "Age",
+            "default": 78,
         },
-        
+        "bio": {
+            "type": "string",
+            "title": "Bio",
+            "minLength": 10,
+            "default": "我是默认的bio"
+        }
     }
 }
 

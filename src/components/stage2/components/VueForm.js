@@ -1,9 +1,12 @@
 import { defineComponent, h, reactive, ref, resolveComponent, watch } from "@vue/runtime-core"
 import WIDGET_MAP from './WIDGET_MAP.js'
 import Widget from './Widget.js';
+import { getUserUiProps } from '../utils/formUtils.js'
+import FieldGroupWrap from './FieldGroupWrap.vue'
+
 export default{
     name: 'VueForm',
-    props: ['modelValue', 'schema', 'errorSchema'],
+    props: ['modelValue', 'schema', 'errorSchema', 'uiSchema'],
     emits: ['update:modelValue'],
     setup(props, {slots, emit }) {
         // 定义一个 form 组件以及其 ref 属性
@@ -37,13 +40,20 @@ export default{
         // 递归渲染子组件
         const children = propertiesKeys.map(v => {
             let child = properties[v]
+
             return h(Widget, {
                 widget: WIDGET_MAP.types[child.type],
                 rootFormData: rootFormData.value,
                 curNodePath: v,
                 schema: props.schema,
+                uiSchema: props.uiSchema[v],
                 errorSchema: props.errorSchema[v],
-                child: child
+                child: child,
+                // 获取ui options
+                uiProps: props.uiSchema && getUserUiProps({
+                    schema: child,
+                    uiSchema: props.uiSchema[v],
+                })
             })
             
             // TODO: 不懂为什么这种方式不能输入东西，非得抽离出来一个单独的组件 Widget.js
@@ -76,7 +86,10 @@ export default{
         return () => {
             return h(form, {
                 model: rootFormData,
-            }, children)
+            }, h(FieldGroupWrap, {
+                title: props.schema.title,
+                description: props.schema.description
+            }, children))
         }
     }
 }

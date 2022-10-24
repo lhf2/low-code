@@ -12,6 +12,10 @@ export default {
             type: Object,
             default: () => ({})
         },
+        uiSchema: {
+            type: Object,
+            default: () => ({})
+        },
         errorSchema: {
             type: Object,
             default: () => ({})
@@ -28,6 +32,10 @@ export default {
             default: 'el-input'
         },
         child: {
+            type: Object,
+            default: () => ({})
+        },
+        uiProps: {
             type: Object,
             default: () => ({})
         }
@@ -47,6 +55,7 @@ export default {
                                 const errorSchemaItem = props.errorSchema
                                 const formValue = props.rootFormData[props.curNodePath]
                                 const required = props.schema.required.includes(props.curNodePath) || false
+
                                 // 使用 ajv 验证
                                 const errors = validateError({
                                     schema: schemaItem,
@@ -79,9 +88,12 @@ export default {
                             genFormItemRequired: props.schema.required.includes(props.curNodePath),
                         }
                     }, props.child.title),
+                    // 关键组件
                     default: () => h(
                         resolveComponent(props.widget),
                         {
+                            // min、max、placeholder
+                            ...props.uiProps,
                             // v-model
                             modelValue: props.rootFormData[props.curNodePath],
                             'onUpdate:modelValue': function updateModelValue(event) {
@@ -89,10 +101,7 @@ export default {
                                 if (preVal !== event) {
                                     props.rootFormData[props.curNodePath] = event;
                                 }
-                            },
-                            // min、max
-                            min: props.schema.properties[props.curNodePath]['minimum'],
-                            max: props.schema.properties[props.curNodePath]['maximum'],
+                            }
                         }
                     )
                 }

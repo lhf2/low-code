@@ -42,7 +42,6 @@ export default function validateError({schema, errorSchema, formValue, required}
     let ajvErrors = ajv.errors;
 
     // 处理 errorSchema
-    console.log(schema, errorSchema);
     let errorObj = getUserErrOptions(schema, errorSchema)
 
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <VueForm v-model="formData" :schema="schema" :errorSchema="errorSchema"></VueForm>
+        <VueForm v-model="formData" :schema="schema" :uiSchema="uiSchema" :errorSchema="errorSchema"></VueForm>
         <el-button @click="test">测试formData的值是否改变</el-button>
     </div>
 
@@ -23,12 +23,14 @@ const test = () => {
 }
 
 const schema = {
-    type: 'object',
-    required: [
+    "title": "测试注册表单",
+    "description": "A simple form example.",
+    "type": 'object',
+    "required": [
         "firstName",
         "lastName"
     ],
-    properties: {
+    "properties": {
         "firstName": {
             "type": "string",
             "title": "First name",
@@ -51,6 +53,16 @@ const schema = {
             "title": "Bio",
             "minLength": 10,
             "default": "我是默认的bio"
+        }
+    }
+}
+
+const uiSchema = {
+    "bio": {
+        "ui:options": {
+            "placeholder": "请输入你的签名",
+            "type": "textarea",
+            "rows": 6
         }
     }
 }

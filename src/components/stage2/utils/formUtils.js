@@ -12,6 +12,14 @@ export function getUserUiOptions({
             if (key === 'ui:options' && isObject(value)) {
                 return { ...options, ...value };
             }
+
+            if (key.indexOf('ui:') === 0) {
+                // 只对 ui:xxx 配置形式支持表达式
+                return {
+                    ...options,
+                    [key.substring(3)]: value 
+                };
+            }
             return options;
         }, {})));
 }

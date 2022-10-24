@@ -58,6 +58,8 @@ const schema = {
 }
 
 const uiSchema = {
+    "ui:title": "表单标题",
+    "ui:description": "-------------- 表单描述 --------------",
     "bio": {
         "ui:options": {
             "placeholder": "请输入你的签名",

@@ -1,7 +1,7 @@
 import { defineComponent, h, reactive, ref, resolveComponent, watch } from "@vue/runtime-core"
 import WIDGET_MAP from './WIDGET_MAP.js'
 import Widget from './Widget.js';
-import { getUserUiProps } from '../utils/formUtils.js'
+import { getUserUiProps, getUserUiOptions } from '../utils/formUtils.js'
 import FieldGroupWrap from './FieldGroupWrap.vue'
 
 export default{
@@ -83,12 +83,17 @@ export default{
             deep: true
         });
 
+        const uiOptions = getUserUiProps({
+            schema: props.schema, 
+            uiSchema: props.uiSchema
+        })
+
         return () => {
             return h(form, {
                 model: rootFormData,
             }, h(FieldGroupWrap, {
-                title: props.schema.title,
-                description: props.schema.description
+                title: uiOptions.title,
+                description: uiOptions.description
             }, children))
         }
     }

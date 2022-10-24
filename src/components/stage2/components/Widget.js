@@ -2,8 +2,9 @@
  * Created by Liu.Jun on 2020/4/23 11:24.
  */
 
-import { h, resolveComponent } from 'vue';
+import { h } from 'vue';
 import validateError from '../utils/validateError.js'
+import { resolveComponent } from '../utils/common.js'
 
 export default {
     name: 'Widget',

@@ -65,6 +65,21 @@ const schema = {
             "description": "最多输入两位小数点，最大值 999999.99",
             "title": "价格",
             "format": "price"
+        },
+        "hobbies": {
+            "type": "number",
+            "title": "爱好",
+            "enum": [
+                1,
+                2,
+                3
+            ],
+            "enumNames": [
+                "吃饭",
+                "睡觉",
+                "打豆豆"
+            ],
+            "default": 1
         }
     }
 }
@@ -84,6 +99,9 @@ const uiSchema = {
             "type": "textarea",
             "rows": 6
         }
+    },
+    "hobbies": {
+        "ui:widget": "SelectWidget",
     }
 }
 

@@ -38,6 +38,16 @@ export function getUserUiProps({
         spec.max = schema.maximum;
     }
 
+    // 获取下拉列表
+    if(schema.enum){
+        // ui配置 enumNames 优先
+        const enumNames = uiOptions.enumNames || schema.enumNames;
+        uiOptions.enumOptions = schema.enum.map((value, i) => {
+            const label = (enumNames && enumNames[i]) || String(value);
+            return { label, value };
+        });
+    }
+
     return {
         ...schema,
         ...spec,

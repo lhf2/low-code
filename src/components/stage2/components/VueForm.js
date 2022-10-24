@@ -1,7 +1,8 @@
-import { defineComponent, h, reactive, ref, resolveComponent, watch } from "@vue/runtime-core"
+import { defineComponent, h, reactive, ref, watch } from "@vue/runtime-core"
 import WIDGET_MAP from './WIDGET_MAP.js'
 import Widget from './Widget.js';
 import { getUserUiProps, getUserUiOptions } from '../utils/formUtils.js'
+import { resolveComponent } from '../utils/common.js'
 import FieldGroupWrap from './FieldGroupWrap.vue'
 
 export default{
@@ -40,8 +41,12 @@ export default{
         // 递归渲染子组件
         const children = propertiesKeys.map(v => {
             let child = properties[v]
+            let uiProps = props.uiSchema && getUserUiProps({
+                schema: child,
+                uiSchema: props.uiSchema[v],
+            })
             return h(Widget, {
-                widget: WIDGET_MAP.types[child.type],
+                widget: WIDGET_MAP[uiProps.widget] || WIDGET_MAP.types[child.type],
                 rootFormData: rootFormData.value,
                 curNodePath: v,
                 schema: props.schema,
@@ -49,10 +54,7 @@ export default{
                 errorSchema: props.errorSchema[v],
                 child: child,
                 // 获取ui options
-                uiProps: props.uiSchema && getUserUiProps({
-                    schema: child,
-                    uiSchema: props.uiSchema[v],
-                }),
+                uiProps,
                 customFormats: props.customFormats
             })
             
@@ -87,7 +89,7 @@ export default{
             schema: props.schema, 
             uiSchema: props.uiSchema
         })
-
+        
         return () => {
             return h(form, {
                 model: rootFormData,

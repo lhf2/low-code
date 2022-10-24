@@ -1,4 +1,5 @@
 import Ajv from "ajv"
+import localize from "ajv-i18n"
 import { isObject } from "./common";
 
 export default function validateError({schema, errorSchema, formValue, required, customFormats}){
@@ -48,9 +49,11 @@ export default function validateError({schema, errorSchema, formValue, required,
 
     // 如果有错误信息
     let ajvErrors = ajv.errors;
+    // 汉化
+    localize.zh(ajvErrors)
     // 处理 errorSchema
     let errorObj = getUserErrOptions(schema, errorSchema)
-    
+    ajvErrors && (ajvErrors[0].message = ajv.errorsText(ajvErrors, {separator: '\n'}))
 
     // 处理成所需格式
     /** 

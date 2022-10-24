@@ -89,7 +89,10 @@ export default {
                                 if (preVal !== event) {
                                     props.rootFormData[props.curNodePath] = event;
                                 }
-                            }
+                            },
+                            // min、max
+                            min: props.schema.properties[props.curNodePath]['minimum'],
+                            max: props.schema.properties[props.curNodePath]['maximum'],
                         }
                     )
                 }

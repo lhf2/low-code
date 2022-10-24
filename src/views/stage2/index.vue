@@ -42,7 +42,9 @@ const schema = {
         "age": {
             "type": "integer",
             "title": "Age",
-            "default": 78,
+            "maximum": 20,
+            "minimum": 10,
+            "default": 16,
         },
         "bio": {
             "type": "string",

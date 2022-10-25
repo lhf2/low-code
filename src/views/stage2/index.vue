@@ -26,8 +26,8 @@ const schema = {
     "description": "A simple form example.",
     "type": 'object',
     "required": [
-        "firstName",
-        "lastName"
+        "lastName",
+        "price"
     ],
     "properties": {
         "firstName": {
@@ -80,15 +80,24 @@ const schema = {
             "default": 1
         }
     },
-    // 依赖项
-    "ui:options": {
-        "onlyShowIfDependent": true
-    },
+    // 单向依赖
+    // "ui:options": {
+    //     "onlyShowIfDependent": true
+    // },
+    // "dependencies": {
+    //     "firstName": [
+    //         "password"
+    //     ]
+    // },
+    // 双向依赖
     "dependencies": {
         "firstName": [
             "password"
+        ],
+        "password": [
+            "firstName"
         ]
-    }
+    },
 }
 
 const uiSchema = {

@@ -43,6 +43,10 @@ export default {
         uiProps: {
             type: Object,
             default: () => ({})
+        },
+        required: {
+            type: Boolean,
+            default: true
         }
     },
     setup(props, { emit }) {
@@ -51,7 +55,6 @@ export default {
                 resolveComponent('el-form-item'),
                 {
                     labelWidth: 110,
-                    //  required: props.schema.required.includes(props.curNodePath),
                     prop: props.curNodePath,
                     rules: [
                         {
@@ -59,7 +62,6 @@ export default {
                                 const schemaItem = props.schema.properties[props.curNodePath]
                                 const errorSchemaItem = props.errorSchema
                                 const formValue = props.rootFormData[props.curNodePath]
-                                const required = props.schema.required.includes(props.curNodePath) || false
 
                                 // 使用 ajv 验证
                                 const errors = validateError({
@@ -67,7 +69,7 @@ export default {
                                     errorSchema: errorSchemaItem,
                                     customFormats: props.customFormats,
                                     formValue,
-                                    required
+                                    required: props.required
                                 });
 
                                 // 存在校验不通过字段
@@ -90,7 +92,7 @@ export default {
                     label: () => h('span', {
                         class: {
                             genFormLabel: true,
-                            genFormItemRequired: props.schema.required.includes(props.curNodePath),
+                            genFormItemRequired: props.required,
                         }
                     }, props.child.title),
                     // 关键组件

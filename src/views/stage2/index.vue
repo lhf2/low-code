@@ -12,9 +12,7 @@ import { reactive, ref } from '@vue/reactivity';
 
 // TODO:这里使用 ref 是因为触发 update:modelValue 事件时，reactive 会有问题
 const formData = ref({
-    "firstName": "Jun",
     "lastName": "Liu",
-    "password": "My.Pass",
     "telephone": "1881446xxxx"
 })
 
@@ -35,7 +33,12 @@ const schema = {
         "firstName": {
             "type": "string",
             "title": "First name",
-            "default": "Jun"
+            // "default": "Jun"
+        },
+        "password": {
+            "type": "string",
+            "title": "Password",
+            "minLength": 3
         },
         "lastName": {
             "type": "string",
@@ -48,11 +51,6 @@ const schema = {
             "maximum": 20,
             "minimum": 10,
             "default": 16,
-        },
-        "password": {
-            "type": "string",
-            "title": "Password",
-            "minLength": 3
         },
         "bio": {
             "type": "string",
@@ -81,6 +79,15 @@ const schema = {
             ],
             "default": 1
         }
+    },
+    // 依赖项
+    "ui:options": {
+        "onlyShowIfDependent": true
+    },
+    "dependencies": {
+        "firstName": [
+            "password"
+        ]
     }
 }
 
